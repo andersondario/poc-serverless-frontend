@@ -1,24 +1,24 @@
 pipeline { 
-    agent any 
+    agent { dockerfile true }
         stages { 
             stage ('Build') { 
                 steps {
                     sh "export PATH=$PATH:/usr/local/bin"
                     sh "export PATH=$PATH:/usr/bin"
-                    sh "/usr/bin/npm install"
-                    sh "/usr/bin/npm run build"
+                    sh "npm install"
+                    sh "npm run build"
                 }
             }
             stage ('Test') { 
                 steps {
-                    sh "/usr/bin/npm run test"
+                    sh "npm run test"
                 }
             }
             stage ('Deploy DEV') { 
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
-                        sh "/usr/local/bin/serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET"
-                        sh "/usr/local/bin/serverless deploy --stage dev --region $REGION -v "
+                        sh "serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET"
+                        sh "serverless deploy --stage dev --region $REGION -v "
                     }
                 }
             }
