@@ -1,10 +1,7 @@
 pipeline { 
-    agent { dockerfile true }
         stages { 
             stage ('Build') { 
                 steps {
-                    sh "export PATH=$PATH:/usr/local/bin"
-                    sh "export PATH=$PATH:/usr/bin"
                     sh "npm install"
                     sh "npm run build"
                 }
@@ -25,16 +22,16 @@ pipeline {
             stage ('Deploy HML') { 
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
-                        sh "/usr/local/bin/serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET"
-                        sh "/usr/local/bin/serverless deploy --stage hml --region $REGION -v "
+                        sh "serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET"
+                        sh "serverless deploy --stage hml --region $REGION -v "
                     }
                 }
             }
             stage ('Monitor PRD') { 
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
-                        sh "/usr/local/bin/serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET"
-                        sh "/usr/local/bin/serverless deploy --stage prd --region $REGION -v "
+                        sh "serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET"
+                        sh "serverless deploy --stage prd --region $REGION -v "
                     }
                 }
             }
