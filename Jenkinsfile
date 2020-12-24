@@ -1,5 +1,5 @@
 pipeline { 
-    agent "node-serverless-agent"
+    agent { node { label "node-serverless-agent" } }
         stages { 
             stage ('Build') { 
                 steps {
