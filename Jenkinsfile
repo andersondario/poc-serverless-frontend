@@ -3,8 +3,10 @@ pipeline {
     options { skipDefaultCheckout() } 
         stages { 
             stage('Checkout') {
-                sh 'printenv'
-                checkout scm
+                steps {
+                    sh 'printenv'
+                    checkout scm
+                }
             }
             stage ('Build') { 
                 steps {
