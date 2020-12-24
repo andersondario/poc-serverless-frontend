@@ -1,5 +1,5 @@
 pipeline { 
-    agent { dockerfile true }
+    agent "node-serverless-agent"
         stages { 
             stage ('Build') { 
                 steps {
