@@ -1,21 +1,19 @@
-service: ${self:custom.appName.${self:provider.stage}}
+service: ${self:custom.appName}
 
 provider:
   name: aws
-  region: ${opt:region, 'us-east-1'}
-  stage: ${opt:stage, 'dev'}
-  deploymentBucket: ${self:custom.appName.${self:provider.stage}}-deploys
+  region: ${opt:region}
+  stage: ${opt:stage}
   profile: ${opt:profile}
+  deploymentBucket: ${self:custom.appNameFull}-deploys
 
 plugins:
   - serverless-s3-sync
 custom:
-  appName: 
-    dev: serverless-frontend-dev
-    hml: serverless-frontend-hml
-    prd: serverless-frontend-prd
+  appName: serverless-frontend
+  appNameFull: serverless-frontend-${self:provider.stage}
   s3Sync:
-    - bucketName: ${self:custom.appName.${self:provider.stage}}
+    - bucketName: ${self:custom.appNameFull}
       localDir: build
 
 resources:
@@ -24,7 +22,7 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         AccessControl: PublicRead
-        BucketName: ${self:custom.appName.${self:provider.stage}}
+        BucketName: ${self:custom.appNameFull}
         WebsiteConfiguration:
           IndexDocument: index.html
     StaticSiteS3BucketPolicy:
