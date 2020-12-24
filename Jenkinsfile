@@ -1,5 +1,6 @@
 pipeline { 
     agent { label "node-serverless-agent"  }
+    options { skipDefaultCheckout() } 
         stages { 
             stage ('Build') { 
                 steps {
