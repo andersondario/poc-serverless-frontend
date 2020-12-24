@@ -5,6 +5,7 @@ provider:
   region: ${opt:region, 'us-east-1'}
   stage: ${opt:stage, 'dev'}
   deploymentBucket: ${self:custom.appName.${self:provider.stage}}-deploys
+  profile: ${opt:profile}
 
 plugins:
   - serverless-s3-sync
@@ -17,33 +18,34 @@ custom:
     - bucketName: ${self:custom.appName.${self:provider.stage}}
       localDir: build
 
-Resources:
-  StaticSite:
-    Type: AWS::S3::Bucket
-    Properties:
-      AccessControl: PublicRead
-      BucketName: ${self:custom.appName.${self:provider.stage}}
-      WebsiteConfiguration:
-        IndexDocument: index.html
-  StaticSiteS3BucketPolicy:
-    Type: AWS::S3::BucketPolicy
-    Properties:
-      Bucket:
-        Ref: StaticSite
-      PolicyDocument:
-        Statement:
-          - Sid: PublicReadGetObject
-            Effect: Allow
-            Principal: "*"
-            Action:
-            - s3:GetObject
-            Resource:
-              Fn::Join: [
-                "", [
-                  "arn:aws:s3:::",
-                  {
-                    "Ref": "StaticSite"
-                  },
-                  "/*"
+resources:
+  Resources:
+    StaticSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        BucketName: ${self:custom.appName.${self:provider.stage}}
+        WebsiteConfiguration:
+          IndexDocument: index.html
+    StaticSiteS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: StaticSite
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+              - s3:GetObject
+              Resource:
+                Fn::Join: [
+                  "", [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "StaticSite"
+                    },
+                    "/*"
+                  ]
                 ]
-              ]
