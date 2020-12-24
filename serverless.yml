@@ -11,7 +11,7 @@ plugins:
   - serverless-s3-sync
 custom:
   appName: serverless-frontend
-  appNameFull: serverless-frontend-${self:provider.stage}
+  appNameFull: ${self:custom.appName}-${self:provider.stage}
   s3Sync:
     - bucketName: ${self:custom.appNameFull}
       localDir: build
