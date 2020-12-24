@@ -23,7 +23,7 @@ pipeline {
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
                         sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
-                        sh "serverless deploy --stage dev --region $REGION -v "
+                        sh "serverless deploy --stage dev --region $REGION -v --profile ${ACC_PROFILE}"
                     }
                 }
             }
@@ -31,7 +31,7 @@ pipeline {
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
                         sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
-                        sh "serverless deploy --stage hml --region $REGION -v "
+                        sh "serverless deploy --stage hml --region $REGION -v --profile ${ACC_PROFILE}"
                     }
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
                 steps {
                     withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
                         sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
-                        sh "serverless deploy --stage prd --region $REGION -v "
+                        sh "serverless deploy --stage prd --region $REGION -v --profile ${ACC_PROFILE}"
                     }
                 }
             }
