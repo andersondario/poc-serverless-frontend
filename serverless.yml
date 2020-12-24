@@ -1,9 +1,9 @@
 service: ${self:custom.appName.${self:provider.stage}}
 
 provider:
-  name: ${opt:provider, aws}
-  region: ${opt:region, us-east-1}
-  stage: ${opt:stage, dev}
+  name: ${opt:provider, 'aws'}
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
   deploymentBucket: ${self:custom.appName.${self:provider.stage}}-deploys
 
 plugins:
