@@ -4,7 +4,7 @@ provider:
   name: ${opt:providerName, 'aws'}
   region: ${opt:region, 'us-east-1'}
   stage: ${opt:stage, 'dev'}
-  deploymentBucket: ${self:custom.appName}-deploys
+  deploymentBucket: ${self:custom.appName.${self:provider.stage}}-deploys
 
 plugins:
   - serverless-s3-sync
