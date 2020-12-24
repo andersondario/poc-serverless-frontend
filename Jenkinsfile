@@ -1,8 +1,9 @@
 pipeline { 
-    agent { node { label "node-serverless-agent" } }
+    agent { label "node-serverless-agent"  }
         stages { 
             stage ('Build') { 
                 steps {
+                    checkout scm
                     sh "npm install"
                     sh "npm run build"
                 }
