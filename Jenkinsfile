@@ -21,26 +21,22 @@ pipeline {
             }
             stage ('Deploy DEV') { 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
-                        sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
-                        sh "serverless deploy --stage dev --region $REGION -v --profile ${ACC_PROFILE}"
-                    }
+                    sh "serverless deploy --stage dev --region $REGION -v --profile ${ACC_PROFILE_DEV}"
                 }
             }
             stage ('Deploy HML') { 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
-                        sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
-                        sh "serverless deploy --stage hml --region $REGION -v --profile ${ACC_PROFILE}"
-                    }
+                    sh "serverless deploy --stage hml --region $REGION -v --profile ${ACC_PROFILE_HML}"
                 }
             }
-            stage ('Monitor PRD') { 
+            stage('Confirm deploy PRD') {
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
-                        sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
-                        sh "serverless deploy --stage prd --region $REGION -v --profile ${ACC_PROFILE}"
-                    }
+                    input 'Prosseguir para PRD?'
+                }
+            }
+            stage ('Deploy PRD') { 
+                steps {
+                    sh "serverless deploy --stage prd --region $REGION -v --profile ${ACC_PROFILE_PRD}"
                 }
             }
         }           
