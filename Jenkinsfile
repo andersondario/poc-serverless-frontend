@@ -4,6 +4,7 @@ pipeline {
         stages { 
             stage ('Build') { 
                 steps {
+                    sh 'printenv'
                     checkout scm
                     sh "npm install"
                     sh "npm run build"
