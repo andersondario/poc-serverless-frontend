@@ -21,24 +21,24 @@ pipeline {
             }
             stage ('Deploy DEV') { 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
-                        sh "serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
+                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
+                        sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
                         sh "serverless deploy --stage dev --region $REGION -v "
                     }
                 }
             }
             stage ('Deploy HML') { 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
-                        sh "serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
+                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
+                        sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
                         sh "serverless deploy --stage hml --region $REGION -v "
                     }
                 }
             }
             stage ('Monitor PRD') { 
                 steps {
-                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', passwordVariable: 'AWS_SECRET', usernameVariable: 'AWS_KEY')]) {
-                        sh "serverless config credentials --provider $PROVIDER --key $AWS_SECRET --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
+                    withCredentials([usernamePassword(credentialsId: 'aws-credentials-all', usernameVariable: 'AWS_KEY', passwordVariable: 'AWS_SECRET')]) {
+                        sh "serverless config credentials --provider $PROVIDER --key $AWS_KEY --secret $AWS_SECRET --profile ${ACC_PROFILE} --overwrite"
                         sh "serverless deploy --stage prd --region $REGION -v "
                     }
                 }
